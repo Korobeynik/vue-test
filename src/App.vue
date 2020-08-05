@@ -77,10 +77,13 @@
                   item-key="index"
                   class="elevation-1"
               >
-                <template v-slot:item.actions="{ item }">
-                  <div class="my-2">
+                <template v-slot:item.actions="{ item }" >
+                  <span class="my-2" style="margin-right: 5px">
+                    <v-btn @click="editItem(item)" small color="warning">Edit</v-btn>
+                  </span>
+                  <span class="my-2">
                     <v-btn @click="deleteItem(item)" small color="error">Delete</v-btn>
-                  </div>
+                  </span>
                 </template>
               </v-data-table>
             </v-card>
@@ -155,6 +158,12 @@
         }
       },
 
+      editItem (item) {
+        this.editedIndex = this.usersList.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+
       deleteItem (item) {
         const index = this.usersList.indexOf(item)
         if(confirm('Are you sure you want to delete this item?')) {
@@ -178,7 +187,7 @@
           return
         }
         if (this.editedIndex > -1) {
-          Object.assign(this.users[this.editedIndex], this.editedItem)
+          Object.assign(this.usersList[this.editedIndex], this.editedItem)
         } else {
           const data = {
             name: this.editedItem.name,
